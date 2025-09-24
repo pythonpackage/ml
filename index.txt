@@ -75,7 +75,7 @@ reader = csv.reader(file)
 for row in reader:
     print(row)
 
-pg 8 - KMeans
+pg 8 - KMeans (create csv file with colums sno,customername,age, annual score,spending score)
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -160,4 +160,5 @@ plt.title("Synthetic Data")
 plt.xlabel("Feature 1")
 plt.ylabel("Feature 2")
 plt.show()
+
 
