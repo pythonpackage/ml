@@ -1,0 +1,163 @@
+pg 1 - list contains a sublist
+
+a=[1,2,3,4,5]
+b=[2,3]
+if all(element in a for element in b):
+    print("The sublist is present in list")
+else:
+    print("Not")
+
+pg 2 dictionary
+
+marks = [{'m1':30 ,'m2':45},{'m1':30 ,'m2':45},{'m1':30 ,'m2':45}]
+for mark in marks:
+    mark['avg']=(mark['m1']+mark['m2'])/2
+
+print(marks)
+
+pg 3- tuple
+
+tup = (1,2,3)
+print(tup)
+print(tup[2])
+tup = (1,2,3,4,5,6)
+print(tup)
+tup[1] = 10
+
+pg 4 power of an array value element wise
+
+import pandas as pd
+import numpy as np
+arr1 = np.array([[1,2,3],[4,5,6]])
+arr2 = np.array([[1,2,3],[4,5,6]])
+print(arr1**arr2)
+np_result = np.power(arr1,arr2)
+print(np_result)
+series1 = pd.Series(arr1.flatten())
+series2 = pd.Series(arr2.flatten())
+pandas_result=series1.pow(series2)
+print(pandas_result)
+
+pg 5 panagram
+
+import string
+alpha = "abcdefghijklmnopqrstuvwxyz"
+def panagram(word):
+    for letter in alpha:
+        if letter not in word.lower():
+            return False
+    return True
+
+if panagram("The five boxing wizards jump quickly"):
+    print("Yes")
+else:
+    print("No")
+
+
+pg 6 - K fold cross
+
+from sklearn import datasets
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import KFold,cross_val_score
+X,y=datasets.load_iris(return_X_y=True)
+clf=DecisionTreeClassifier(random_state=42)
+k_folds=KFold(n_splits=5)
+scores=cross_val_score(clf,X,y,cv=k_folds)
+print("Cross Validation scores",scores)
+print("Average Cv score",scores.mean())
+print("Number of CV scores used in Average:",len(scores))
+
+pg 7 - Read a csv file
+ 
+import csv
+file = open('C:/Users/sanka/Desktop/data.csv','r')
+reader = csv.reader(file)
+for row in reader:
+    print(row)
+
+pg 8 - KMeans
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+X = pd.read_csv("C:/Users/sanka/Downloads/customer_data.csv").iloc[:, [3,4]].values
+plt.plot(range(1,11), [KMeans(n_clusters=i, init='k-means++', random_state=42).fit(X).inertia_ for i in range(1,11)], 'o-')
+plt.title("Elbow Method"); plt.xlabel("Clusters"); plt.ylabel("WCSS"); plt.show()
+kmeans = KMeans(n_clusters=5, init='k-means++', random_state=42).fit(X)
+y = kmeans.labels_
+colors = ['blue','green','red','cyan','magenta']
+for i,c in enumerate(colors): plt.scatter(X[y==i,0], X[y==i,1], s=100, c=c, label=f"Cluster {i+1}")
+plt.scatter(kmeans.cluster_centers_[:,0], kmeans.cluster_centers_[:,1], s=300, c='yellow', marker='*', label="Centroids")
+plt.title("Clusters of Customers"); plt.xlabel("Annual Income (k$)"); plt.ylabel("Spending Score (1-100)")
+plt.legend(); plt.show()
+
+
+pg 9 - Navie Bayes Algorithm
+
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
+x=np.array([[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10],[10,11]])
+y=np.array([0,0,0,0,0,1,1,1,1,1])
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.3,random_state=42)
+model=GaussianNB()
+model.fit(x_train,y_train)
+y_pred=model.predict(x_test)
+accuracy=accuracy_score(y_test,y_pred)
+print("Accuracy: {:.2f}%".format(accuracy*100))
+
+
+pg 10 - Logistic Regression 
+
+import numpy as np, matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+X, y = load_iris(return_X_y=True)
+X, y = X[y!=2], y[y!=2]
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.3, random_state=42)
+m = LogisticRegression().fit(Xtr, ytr)
+yp = m.predict(Xte)
+print(f"Accuracy: {accuracy_score(yte, yp):.2f}\n",classification_report(yte, yp), "\nConfusion:\n", confusion_matrix(yte, yp))
+m2 = LogisticRegression().fit(Xtr[:,:2], ytr)
+x_min, x_max, y_min, y_max = Xtr[:,0].min()-1, Xtr[:,0].max()+1, Xtr[:,1].min()-1, Xtr[:,1].max()+1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.2), np.arange(y_min, y_max, 0.2))
+plt.contourf(xx, yy, m2.predict(np.c_[xx.ravel(), yy.ravel()]).reshape(xx.shape), alpha=0.8)
+plt.scatter(Xtr[:,0], Xtr[:,1], c=ytr, edgecolor='k'); plt.xlabel("F1"); plt.ylabel("F2")
+plt.title("Decision Boundary"); plt.show()
+
+
+pg 11 - Stacked Generalization
+
+import numpy as np
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import StackingClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+X, y = load_iris(return_X_y=True)
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.3, random_state=42)
+base = [('dt', DecisionTreeClassifier()), ('knn', KNeighborsClassifier()), ('svc', SVC(probability=True))]
+stack = StackingClassifier(estimators=base, final_estimator=LogisticRegression(), cv=5).fit(Xtr, ytr)
+yp = stack.predict(Xte)
+print(f"Accuracy: {accuracy_score(yte, yp)*100:.2f}%")
+print("Confusion Matrix:\n", confusion_matrix(yte, yp))
+print("Classification Report:\n", classification_report(yte, yp))
+
+pg 12 - Support Vector Machine using Python
+
+import numpy as np, pandas as pd, matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+from sklearn.svm import SVC
+X, Y = make_blobs(n_samples=500, centers=2, random_state=0, cluster_std=0.4)
+plt.scatter(X[:,0], X[:,1], c=Y, s=50, cmap='spring')
+plt.title("Synthetic Data")
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.show()
+
