@@ -77,7 +77,17 @@ for row in reader:
 
 pg 8 - KMeans (create csv file with colums sno,customername,age, annual score,spending score)
 
-
+(SNo,Customer Name,Age,Annual Score,Spending Score
+1,Customer_1,60,91853,43
+2,Customer_2,57,104332,50
+3,Customer_3,34,91910,60
+4,Customer_4,46,53204,49
+5,Customer_5,53,46399,8
+6,Customer_6,50,68235,30
+7,Customer_7,33,59291,39
+8,Customer_8,30,35064,87
+9,Customer_9,34,64582,14
+10,Customer_10,59,74658,84)
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -162,5 +172,6 @@ plt.title("Synthetic Data")
 plt.xlabel("Feature 1")
 plt.ylabel("Feature 2")
 plt.show()
+
 
 
